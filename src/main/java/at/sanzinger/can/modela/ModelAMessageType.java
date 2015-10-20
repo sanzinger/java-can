@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 
+import at.sanzinger.can.Log;
 import at.sanzinger.can.message.AnonymousConstant;
 import at.sanzinger.can.message.ByteSpec;
 import at.sanzinger.can.message.ConstantByteSpec;
@@ -101,8 +102,24 @@ public abstract class ModelAMessageType<T extends ModelAMessage<?>> {
 		for(ByteSpec s : getByteSpec()) {
 			if(startAt == s || started) {
 				started = true;
-				byte[] bytes = new byte[s.getLength(buff)];
-				is.read(bytes);
+				int length = s.getLength(buff);
+				int waitCount = 10;
+				while(is.available() < length && waitCount > 0) {
+					try {
+						Thread.sleep(0, 500*1000);
+					} catch (InterruptedException e) {
+						// Ignore
+					}
+					waitCount --;
+				}
+				if(waitCount == 0) {
+					throw new IOException("Read timed out");
+				}
+				byte[] bytes = new byte[length];
+				int bytesRead = is.read(bytes);
+				if(bytesRead != length) {
+					Log.error("Not exptected");
+				}
 				buff.put(bytes);
 			}
 		}

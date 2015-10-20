@@ -17,6 +17,7 @@ public class Log {
 	}
 	
 	public static void log(String level, String msg, Object ... values) {
-		System.out.println(format("%s [%s]: %s", new Date(), level, format(msg, values)));
+		String out = format("%s [%s]: %s", new Date(), level, format(msg, values));
+		System.out.println(out);
 	}
 }
