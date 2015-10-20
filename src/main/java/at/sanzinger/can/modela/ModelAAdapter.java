@@ -95,6 +95,14 @@ public class ModelAAdapter {
 		setup.setSendMode(ModelASendMode.ONLY_SEND_ONCE);
 	}
 	
+	public void setBps(ModelACANBps bps) {
+		setup.setBps(bps);
+	}
+	
+	public ModelACANBps getBps() {
+		return setup.getBps();
+	}
+	
 	public boolean start() throws SerialPortException {
 		initializeDefaults();
 		port = new SerialPort(device);
