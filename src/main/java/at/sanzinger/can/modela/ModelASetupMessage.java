@@ -111,10 +111,8 @@ public class ModelASetupMessage extends ModelAMessage<ModelASetupMessage> {
 	}
 	
 	public enum ModelAMode implements ValueEnum {
-//		EXTENDED_FRAME(0x1),
-//		NORMAL_FRAME(0x2);
-		EXTENDED_FRAME(0x2),
-		NORMAL_FRAME(0x1);
+		EXTENDED_FRAME(0x1),
+		NORMAL_FRAME(0x2);
 		
 		public byte value;
 		private ModelAMode(int value) {

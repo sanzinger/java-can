@@ -89,6 +89,7 @@ public class ModelAAdapter implements AutoCloseable {
 	
 	public ModelAAdapter(String device) {
 		this.device = device;
+		initializeDefaults();
 	}
 	
 	public void setDataConsumer(Consumer<DataMessage> dataConsumer) {
@@ -99,7 +100,7 @@ public class ModelAAdapter implements AutoCloseable {
 		setup.setBps(ModelACANBps.BPS250k);
 		setup.setFrameMode(ModelAFrameMode.NORMAL);
 		setup.setMode(ModelAMode.NORMAL_FRAME);
-		setup.setSendMode(ModelASendMode.ONLY_SEND_ONCE);
+		setup.setSendMode(ModelASendMode.NOT_ONLY_SEND_ONCE);
 	}
 	
 	public void setBps(ModelACANBps bps) {
@@ -111,7 +112,6 @@ public class ModelAAdapter implements AutoCloseable {
 	}
 	
 	public boolean start() throws SerialPortException {
-		initializeDefaults();
 		port = new SerialPort(device);
 		port.openPort();
 		port.setParams(1228800, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
@@ -191,9 +191,12 @@ public class ModelAAdapter implements AutoCloseable {
 			return tmp;
 		}
 	}
-	
+
 	private boolean sendMessage(ModelAMessage<?> msg) {
-		byte[] body = msg.getBody();
+		return sendMessage(msg.getBody());
+	}
+	
+	private synchronized boolean sendMessage(byte[] body) {
 		synchronized (outLock) {
 			assert out == null;
 			out = body;

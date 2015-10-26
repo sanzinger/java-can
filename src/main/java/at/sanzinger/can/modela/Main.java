@@ -38,6 +38,7 @@ public class Main {
 					Thread.sleep(1);
 				}
 			}
+			Thread.sleep(10000);
 		}
 	}
 }
