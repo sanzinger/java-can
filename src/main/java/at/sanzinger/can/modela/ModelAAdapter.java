@@ -10,8 +10,10 @@ import java.io.InputStream;
 import java.util.function.Consumer;
 
 import at.sanzinger.can.DataMessage;
+import at.sanzinger.can.message.MessageType;
 import at.sanzinger.can.modela.ModelACANStatusMessage.ModelACANStatusMessageType;
 import at.sanzinger.can.modela.ModelADataMessage.ModelADataMessageType;
+import at.sanzinger.can.modela.ModelAMessage.ModelAMessageType;
 import at.sanzinger.can.modela.ModelASetupMessage.ModelACANBps;
 import at.sanzinger.can.modela.ModelASetupMessage.ModelAFrameMode;
 import at.sanzinger.can.modela.ModelASetupMessage.ModelAMode;
@@ -164,7 +166,7 @@ public class ModelAAdapter implements AutoCloseable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends ModelAMessage<T>> T sendReceive(ModelAMessage<?> toSend, ModelAMessageType<T> expectedReturn) {
+	private <T extends ModelAMessage<T>> T sendReceive(ModelAMessage<?> toSend, MessageType<T> expectedReturn) {
 		synchronized(inLock) {
 			sendMessage(new ModelACANStatusMessage());
 			ModelAMessage<?> msg = receiveMessage();
