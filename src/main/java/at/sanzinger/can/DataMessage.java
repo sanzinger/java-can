@@ -5,7 +5,6 @@ public class DataMessage {
 	private final int id;
 	
 	public DataMessage(byte[] data, int id) {
-		super();
 		this.data = data;
 		this.id = id;
 	}
